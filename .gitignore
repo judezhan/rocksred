@@ -1,0 +1,6 @@
+bin/
+cmake-build-debug/
+*.swp
+DS_Store
+*.o
+.idea/
