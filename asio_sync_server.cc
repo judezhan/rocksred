@@ -11,7 +11,10 @@ void client_session(socket_ptr sock) {
         char data[512];
         size_t len = sock->read_some(buffer(data));
         if ( len > 0)
-            write(*sock, buffer("ok", 2));
+            while (true) {
+                write(*sock, buffer("ok\r\n", 4));
+                boost::this_thread::sleep(boost::posix_time::seconds(1));
+            }
     }
 }
 
@@ -20,9 +23,10 @@ int main() {
     ip::tcp::endpoint ep(ip::tcp::v4(), 2001); // listen on 2001
     ip::tcp::acceptor acc(service, ep);
     while (true) {
+        printf("Lalala...\n");
         socket_ptr sock(new ip::tcp::socket(service));
         acc.accept(*sock);
-        boost::thread( boost::bind(client_session, sock));
+        boost::thread(boost::bind(client_session, sock));
     }
     return 0;
 }
