@@ -27,6 +27,7 @@ int main() {
         socket_ptr sock(new ip::tcp::socket(service));
         acc.accept(*sock);
         boost::thread(boost::bind(client_session, sock));
+        // client_session(sock);
     }
     return 0;
 }
