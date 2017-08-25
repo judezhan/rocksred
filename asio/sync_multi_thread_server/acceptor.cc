@@ -1,3 +1,5 @@
+#include <iostream>
+#include <thread>
 #include "include/acceptor.h"
 #include "include/service.h"
 
@@ -8,8 +10,10 @@ Acceptor::Acceptor(boost::asio::io_service& ios, unsigned short port_num) :
     }
 
 void Acceptor::Accept() {
+    std::cout << "[" << std::this_thread::get_id() << "] Going to call accept..." << std::endl;
     std::shared_ptr<boost::asio::ip::tcp::socket> sock_ptr(new boost::asio::ip::tcp::socket(m_ios));
     m_acceptor.accept(*sock_ptr.get());
+    std::cout << "[" << std::this_thread::get_id() << "] Accept called..." << std::endl;
     (new Service) -> start_handler_client(sock_ptr);
 }
 
