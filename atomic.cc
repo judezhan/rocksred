@@ -4,7 +4,8 @@
 
 class A {
     private:
-        std::atomic<int> value;
+        // std::atomic<int> value;
+        std::atomic_int value;
         // int value;
 
     public:
@@ -48,12 +49,12 @@ class B {
 
 
 int main() {
-    B a;
+    A b;
     std::vector<std::thread> threads;
     for (int i=0; i<100; ++i) {
-        threads.push_back(std::thread([&a]() {
+        threads.push_back(std::thread([&b]() {
             for (int j=0; j<10000; ++j) {
-                a.increase();
+                b.increase();
             }
         }));
     }
@@ -61,6 +62,6 @@ int main() {
     for (auto& t: threads) {
         t.join();
     }
-    a.print();
+    b.print();
     return 0;
 }
